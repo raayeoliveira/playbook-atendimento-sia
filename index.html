@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Playbook de Atendimento · Franquias SIA</title>
+<style>
+  :root{
+    --coral:#EB615E;
+    --coral-soft:#FDEEEE;
+    --ink:#0E0E0E;
+    --ink-70:#333;
+    --ink-50:#6B6B6B;
+    --ink-30:#A8A8A8;
+    --line:#E8E6E3;
+    --paper:#FAF8F5;
+    --card:#FFFFFF;
+    --accent-blue:#1E3A5F;
+    --warn:#B5651D;
+    --ok:#2F6B4A;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--paper);color:var(--ink);font-family:Georgia,'Times New Roman',serif;font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  .sans{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}
+  .wrap{max-width:1120px;margin:0 auto;padding:64px 48px 96px}
+  header.cover{display:grid;grid-template-columns:1fr 120px;gap:48px;padding-bottom:48px;border-bottom:1px solid var(--line);margin-bottom:56px;align-items:start}
+  header.cover .logo{width:92px;height:92px;justify-self:end}
+  header.cover .logo svg{width:100%;height:auto;display:block}
+  .eyebrow{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--coral);font-weight:600;margin-bottom:16px}
+  h1{font-size:52px;line-height:1.05;letter-spacing:-.02em;font-weight:400;margin-bottom:16px}
+  h1 em{font-style:italic;color:var(--coral)}
+  .lede{font-size:21px;line-height:1.5;color:var(--ink-70);max-width:720px;margin-top:8px}
+  .meta-line{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;color:var(--ink-50);margin-top:24px;display:flex;flex-wrap:wrap;gap:24px}
+  .meta-line span{display:inline-flex;align-items:baseline;gap:6px}
+  .meta-line strong{color:var(--ink);font-weight:600}
+
+  section.block{margin-bottom:80px}
+  h2{font-size:34px;font-weight:400;letter-spacing:-.01em;margin-bottom:4px;padding-top:24px;border-top:3px solid var(--ink);padding-bottom:4px}
+  h2 .idx{color:var(--coral);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;letter-spacing:.2em;display:block;font-weight:600;margin-bottom:12px}
+  .block-intro{font-size:16px;color:var(--ink-70);max-width:720px;margin-bottom:32px;line-height:1.6}
+
+  /* Overview numbers */
+  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin:48px 0 32px}
+  .kpi{background:var(--card);padding:24px}
+  .kpi .n{font-size:36px;font-weight:400;line-height:1;letter-spacing:-.02em;color:var(--ink)}
+  .kpi .lbl{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-50);margin-top:8px}
+  .kpi .sub{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;color:var(--ink-30);margin-top:4px}
+
+  /* Table of queues */
+  table.filas{width:100%;border-collapse:collapse;margin:16px 0 32px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px}
+  table.filas th{text-align:left;font-weight:600;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-50);padding:12px 8px;border-bottom:2px solid var(--ink)}
+  table.filas td{padding:14px 8px;border-bottom:1px solid var(--line)}
+  table.filas td.num{text-align:right;font-variant-numeric:tabular-nums}
+  table.filas tr:hover{background:var(--coral-soft)}
+  table.filas td.name{font-weight:600;color:var(--ink)}
+  .bar{display:inline-block;height:6px;background:var(--coral);vertical-align:middle;margin-right:8px;border-radius:1px}
+
+  /* Theme cards */
+  .tema{background:var(--card);border:1px solid var(--line);margin-bottom:16px}
+  .tema summary{list-style:none;cursor:pointer;padding:20px 24px;display:grid;grid-template-columns:1fr auto auto;gap:16px;align-items:center;user-select:none}
+  .tema summary::-webkit-details-marker{display:none}
+  .tema summary::after{content:'+';font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:24px;color:var(--ink-30);line-height:1;transition:transform .2s}
+  .tema[open] summary::after{content:'×'}
+  .tema .t-title{font-size:20px;font-weight:400;color:var(--ink);letter-spacing:-.01em}
+  .tema .t-vol{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;color:var(--ink-50);white-space:nowrap}
+  .tema .t-vol b{color:var(--ink);font-size:14px;font-weight:600}
+  .tema[open]{border-color:var(--ink)}
+  .tema[open] summary{border-bottom:1px solid var(--line)}
+  .tema-body{padding:24px 32px 32px;display:grid;grid-template-columns:1fr 1fr;gap:40px}
+  .tema-body h4{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--coral);font-weight:600;margin-bottom:10px}
+  .tema-body ul{list-style:none;padding:0}
+  .tema-body ul li{padding:6px 0;font-size:15px;color:var(--ink-70);border-bottom:1px dashed var(--line)}
+  .tema-body ul li:last-child{border-bottom:none}
+  .tema-body .full{grid-column:1/-1}
+  .quote{background:var(--paper);border-left:3px solid var(--coral);padding:16px 20px;font-size:15px;color:var(--ink);margin-bottom:12px;font-style:italic;line-height:1.55}
+  .quote::before{content:'"';color:var(--coral);font-size:28px;line-height:0;position:relative;top:10px;margin-right:6px}
+  .reply{background:#F0F4EC;border-left:3px solid var(--ok);padding:16px 20px;font-size:15px;color:var(--ink);margin-bottom:12px;line-height:1.55;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}
+  .reply strong{display:block;font-family:Georgia,serif;font-weight:600;font-style:italic;color:var(--ok);margin-bottom:4px}
+  .escal{background:#FDF3EB;border:1px solid #E8C9A8;padding:16px 20px;font-size:14px;color:var(--warn);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.55}
+  .escal b{color:var(--warn)}
+
+  /* Insights block */
+  .insight{background:var(--card);border:1px solid var(--line);padding:28px 32px;margin:24px 0;display:grid;grid-template-columns:140px 1fr;gap:32px;align-items:start}
+  .insight .n{font-size:48px;font-weight:400;letter-spacing:-.03em;color:var(--coral);line-height:.9}
+  .insight .n small{font-size:14px;color:var(--ink-50);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0;display:block;margin-top:4px}
+  .insight p{font-size:16px;color:var(--ink-70);line-height:1.6}
+  .insight p strong{color:var(--ink);font-weight:600}
+
+  footer{margin-top:96px;padding-top:32px;border-top:1px solid var(--line);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;color:var(--ink-50);display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px}
+
+  @media (max-width:860px){
+    .wrap{padding:40px 24px 64px}
+    header.cover{grid-template-columns:1fr;gap:24px}
+    header.cover .logo{width:64px;height:64px;justify-self:start}
+    h1{font-size:36px}
+    .kpis{grid-template-columns:repeat(2,1fr)}
+    .tema-body{grid-template-columns:1fr;gap:24px}
+    .insight{grid-template-columns:1fr}
+  }
+  @media print{
+    body{background:#fff}
+    .tema{break-inside:avoid}
+    details{break-inside:avoid}
+    .tema summary::after{display:none}
+    .tema[open] summary{border-bottom:1px solid #ccc}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <div>
+    <div class="eyebrow">BackOffice Franquias · Base de Conhecimento</div>
+    <h1>Playbook de Atendimento <em>SIA</em> &mdash; filas que o time de Franquias atende</h1>
+    <p class="lede">Base destilada de 60 dias de conversas reais na plataforma.sia.zone, agrupada por tema recorrente com resposta modelo baseada em como o time já atende hoje.</p>
+    <div class="meta-line sans">
+      <span>Janela <strong>22/08&ndash;21/10/2026</strong></span>
+      <span>Fonte <strong>Nekt · postgres_public_chat_session + chat_message</strong></span>
+      <span>Autor <strong>Rayanne Oliveira</strong></span>
+    </div>
+  </div>
+  <div class="logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 564 575" fill="none"><path d="M543.226 178.172L442.93 119.392C443.194 117.952 443.72 116.643 443.72 115.203V26.5752C443.72 11.913 431.743 0 417.001 0H363.562C348.821 0 336.843 11.913 336.843 26.5752V57.6015L300.516 36.3936C285.774 27.6225 266.294 29.0626 252.605 39.1428C252.342 39.2737 252.079 39.2737 251.947 39.4046L20.951 172.543C1.73419 183.932 -6.29474 210.507 5.55122 230.406C17.9237 251.09 45.301 256.588 64.5178 245.199L78.3381 237.213C62.017 269.025 51.7505 305.026 51.7505 344.169C51.7505 406.221 75.7056 467.226 119.799 511.344C137.173 528.624 157.443 543.156 179.555 553.759C196.666 562.007 214.567 568.814 233.257 572.218C258.002 576.669 283.8 574.444 308.808 574.444C335.922 574.444 363.036 574.444 390.018 574.444C414.5 574.444 439.113 574.575 463.99 574.575C470.176 574.575 476.231 573.004 481.759 570.254C488.866 566.72 492.947 562.792 497.685 556.509C502.95 549.57 506.635 541.061 506.635 532.159V252.923C525.062 259.599 547.306 253.839 558.363 235.511C570.34 215.613 562.311 189.038 542.963 177.648L543.226 178.172ZM427.794 348.751C427.794 433.582 370.012 502.573 282.878 502.573C195.745 502.573 131.777 429.131 131.777 344.3C131.777 259.468 195.745 188.776 282.878 188.776C370.012 188.776 427.794 254.232 427.794 338.147V348.751Z" fill="#EB615E"/></svg></div>
+</header>
+
+<section class="block">
+  <h2><span class="idx">00 · Panorama</span>O que a SIA viu em 60 dias</h2>
+
+  <div class="kpis">
+    <div class="kpi"><div class="n">18.669</div><div class="lbl">Conversas abertas</div><div class="sub">5 filas de Franquias</div></div>
+    <div class="kpi"><div class="n">17.678</div><div class="lbl">Fechadas</div><div class="sub">95% do volume</div></div>
+    <div class="kpi"><div class="n">1.739</div><div class="lbl">Resolvidas</div><div class="sub">9,3% &mdash; com atendente humano</div></div>
+    <div class="kpi"><div class="n">1.854</div><div class="lbl">Com mensagem real</div><div class="sub">cliente respondeu com texto &gt;15 chars</div></div>
+    <div class="kpi"><div class="n">25</div><div class="lbl">Temas identificados</div><div class="sub">em 5 filas</div></div>
+  </div>
+
+  <p class="block-intro">A SIA opera principalmente como plataforma de disparo &mdash; 90% das sessões iniciam com o bot abordando o lead. Só <strong>1.854 conversas</strong> (10%) tiveram resposta real do cliente com texto. Essas são as que valem como padrão de atendimento.</p>
+
+  <table class="filas">
+    <thead><tr><th>Fila</th><th class="num">Sessões 60d</th><th class="num">Fechadas</th><th class="num">Resolvidas</th><th class="num">Com msg real</th><th>Função</th></tr></thead>
+    <tbody>
+      <tr><td class="name">Franquias &mdash; Pré Vendas</td><td class="num"><span class="bar" style="width:180px"></span>15.388</td><td class="num">14.550</td><td class="num">950</td><td class="num">1.051</td><td>Prospecção ativa massiva de novos franqueados</td></tr>
+      <tr><td class="name">Franquias &mdash; Comercial</td><td class="num"><span class="bar" style="width:28px"></span>2.305</td><td class="num">2.302</td><td class="num">357</td><td class="num">342</td><td>Qualificação e follow-up documental</td></tr>
+      <tr><td class="name">Franquias &mdash; Fornecedores e Compras</td><td class="num"><span class="bar" style="width:12px"></span>938</td><td class="num">789</td><td class="num">395</td><td class="num">421</td><td>Operação do franqueado: enxoval, lojinha, pagamento</td></tr>
+      <tr><td class="name">Franquias &mdash; Consultoria Regional</td><td class="num"><span class="bar" style="width:3px"></span>32</td><td class="num">31</td><td class="num">31</td><td class="num">34</td><td>Direcionamento ao gestor regional</td></tr>
+      <tr><td class="name">Franquias &mdash; Manutenção</td><td class="num"><span class="bar" style="width:1px"></span>6</td><td class="num">6</td><td class="num">6</td><td class="num">6</td><td>Volume marginal; manutenção de imóvel + fornecedor de serviço</td></tr>
+    </tbody>
+  </table>
+
+  <div class="insight">
+    <div class="n">24%<small>do volume</small></div>
+    <p>é <strong>ruído de auto-reply de terceiros</strong> &mdash; corretores de imóveis, imobiliárias concorrentes, agências de turismo, pousadas. A SIA bate em números de WhatsApp Business de outras empresas no outbound, e o auto-reply delas entra na fila como se fosse resposta. <strong>Não precisa responder</strong> &mdash; só marcar como ruído e encerrar.</p>
+  </div>
+</section>
+
+<!-- BLOCO 1 — PROSPECÇÃO -->
+<section class="block">
+  <h2><span class="idx">01 · Pré Vendas + Comercial</span>Prospecção de novos franqueados</h2>
+  <p class="block-intro">Essas duas filas somam <strong>17.693 sessões</strong> em 60 dias (95% do volume). O conteúdo é o mesmo &mdash; disparo do bot, resposta curta do lead. Os 4 temas abaixo cobrem praticamente tudo que vale resposta humana.</p>
+
+  <details class="tema" open>
+    <summary>
+      <span class="t-title">1.1 &mdash; Lead frio chegando pela LP</span>
+      <span class="t-vol"><b>99</b> sessões</span>
+    </summary>
+    <div class="tema-body">
+      <div>
+        <h4>Sinais na 1ª mensagem</h4>
+        <ul>
+          <li>"Olá! Quero avaliar ser franqueado Seazone na minha cidade."</li>
+          <li>"Eu gostaria de trabalhar como um franqueado seazone"</li>
+          <li>"Gostaria de investir na franquia"</li>
+        </ul>
+        <h4 style="margin-top:24px">Quando escalar</h4>
+        <div class="escal">Lead veio pela LP e já respondeu com cidade/estado → <b>agendar reunião comercial</b> e tirar da fila. Se insistir em "quero saber valor da franquia" sem agendar, enviar material padrão e aguardar retorno.</div>
+      </div>
+      <div>
+        <h4>Resposta modelo (padrão Rapha / Raphael / Nevine)</h4>
+        <div class="quote">Olá! Quero avaliar ser franqueado Seazone na minha cidade.</div>
+        <div class="reply"><strong>Agente</strong>Oi, Alex, tudo bem? 😊 Aqui é o Rapha, da Seazone &mdash; que ótimo saber do seu interesse!<br><br>Hoje a Seazone é a maior empresa de aluguel por temporada do Brasil, e em média nossos franqueados recuperam o valor investido em 12 meses. Vou te mostrar rapidinho como funciona.<br><br>Para qual localidade seria o seu interesse?</div>
+      </div>
+    </div>
+  </details>
+
+  <details class="tema">
+    <summary>
+      <span class="t-title">1.2 &mdash; "Não tenho interesse" (resposta ao outbound)</span>
+      <span class="t-vol"><b>283</b> sessões</span>
+    </summary>
+    <div class="tema-body">
+      <div>
+        <h4>Sinais na 1ª mensagem</h4>
+        <ul>
+          <li>"Não tenho interesse"</li>
+          <li>"Sem interesse"</li>
+          <li>"Sair"</li>
+        </ul>
+        <h4 style="margin-top:24px">Quando escalar</h4>
+        <div class="escal">Não escalar. <b>Encerrar com cordialidade</b> e marcar como "lead descartado" no Pipedrive via o link do deal da sessão (campo <code>pipedrive_deal_id</code>).</div>
+      </div>
+      <div>
+        <h4>Resposta modelo</h4>
+        <div class="quote">Não tenho interesse</div>
+        <div class="reply"><strong>Versão curta</strong>Obrigada pelo retorno, um abraço!</div>
+        <div class="reply"><strong>Versão com porta aberta</strong>Obrigada pelo retorno, se tiver interesse em outro momento ou tiver alguma indicação fico à disposição!</div>
+      </div>
+    </div>
+  </details>
+
+  <details class="tema">
+    <summary>
+      <span class="t-title">1.3 &mdash; "Quero saber mais" (resposta ao outbound)</span>
+      <span class="t-vol"><b>324</b> sessões</span>
+    </summary>
+    <div class="tema-body">
+      <div>
+        <h4>Sinais na 1ª mensagem</h4>
+        <ul>
+          <li>"Quero saber mais"</li>
+          <li>"Gostaria de saber mais"</li>
+          <li>"Como funciona"</li>
+          <li>"Mais informações"</li>
+        </ul>
+        <h4 style="margin-top:24px">Quando escalar</h4>
+        <div class="escal">Lead qualificou cidade e perfil → <b>agendar reunião comercial</b>. Lead vago/com pergunta genérica → enviar pitch padrão e perguntar cidade antes de qualquer outra coisa.</div>
+      </div>
+      <div>
+        <h4>Resposta modelo</h4>
+        <div class="quote">Quero saber mais</div>
+        <div class="reply"><strong>Abertura</strong>Para qual localidade seria o seu interesse?</div>
+        <div class="reply"><strong>Depois da localidade: pitch padrão</strong>Oi [Nome], que ótimo saber do seu interesse!<br><br>Nós atuamos com aluguel por temporada e somos a maior empresa do ramo no Brasil. A Seazone cuida das reservas, dos anúncios nas plataformas, da precificação e do sistema. Você, como franqueado, cuidaria da operação local: check-in, check-out, limpeza e enxoval, manutenções e o relacionamento com os proprietários da sua região.<br><br>Não precisa de ponto comercial. A operação é home-based, você toca de casa. Só precisa de um espaço organizado pra guardar o enxoval.</div>
+      </div>
+    </div>
+  </details>
+
+  <details class="tema">
+    <summary>
+      <span class="t-title">1.4 &mdash; Lead qualificado (já tem imóvel, pousada ou atua no setor)</span>
+      <span class="t-vol"><b>~15</b> sessões (sinal forte, volume baixo)</span>
+    </summary>
+    <div class="tema-body">
+      <div>
+        <h4>Sinais na 1ª mensagem</h4>
+        <ul>
+          <li>"Tenho uma pousada arrendada nos Ingleses há 5 anos e estou pensando em mudar meu modelo"</li>
+          <li>"Eu já trabalho com short stay. Tenho algumas unidades operando"</li>
+          <li>"Sou proprietário de alguns imóveis"</li>
+          <li>"Administro imóveis de temporada"</li>
+        </ul>
+        <h4 style="margin-top:24px">Quando escalar</h4>
+        <div class="escal"><b>Prioridade máxima.</b> Lead já tem conhecimento de mercado e CAC é baixíssimo. Agendar reunião comercial <b>no mesmo dia</b> se possível, encaminhar pro Abner Pereira ou direto pra squad comercial.</div>
+      </div>
+      <div>
+        <h4>Resposta modelo</h4>
+        <div class="quote">Oi, a8nda não sei c9mo funciona. Eu já trabalho com short stay. Tenho algumas unidades operando</div>
+        <div class="reply"><strong>Agente (Nevine, Franquias)</strong>Olá Mauro tudo bem? Nevine aqui de Franquias.<br><br>Que bacana saber que você já atua no setor &mdash; isso facilita muito. Me conta um pouco: onde ficam suas unidades hoje e com quantas opera? Dependendo da região e volume, pode fazer sentido conversarmos sobre franquia ou sobre colocar seus imóveis sob gestão Seazone no modelo proprietário.<br><br>Posso te chamar amanhã numa reunião rápida de 30min?</div>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- BLOCO 2 — FORNECEDORES -->
+<section class="block">
+  <h2><span class="idx">02 · Fornecedores e Compras</span>Operação do franqueado no dia a dia</h2>
+  <p class="block-intro">Fila com <strong>938 sessões</strong> em 60 dias e a mais rica em padrões operacionais. Atendida majoritariamente pela <strong>Wania</strong> e <strong>Larissa</strong>. 12 temas cobrem 70% do volume real.</p>
+
+  <details class="tema" open>
+    <summary>
+      <span class="t-title">2.1 &mdash; Enxoval atrasado / não chegou (Harus)</span>
+      <span class="t-vol"><b>29</b> sessões</span>
+    </summary>
+    <div class="tema-body">
+      <div>
+        <h4>Sinais na 1ª mensagem</h4>
+        <ul>
+          <li>"A Harus não me entregou o que comprei no evento"</li>
+          <li>"Não chegou meus produtos da Harus no dia 10"</li>
+          <li>"Já tem 3 semanas que fiz o pedido"</li>
+          <li>"Até agora não chegou", "rastrear o pedido já pago"</li>
+          <li>"Preciso de ajuda com o enxoval do [CÓDIGO]"</li>
+        </ul>
+        <h4 style="margin-top:24px">Quando escalar</h4>
+        <div class="escal">Se o atraso passou de <b>30 dias corridos</b> da data do pedido ou se há <b>reserva marcada que depende do enxoval</b>, encaminhar pra squad de Compras com o código do imóvel e o número do card da lojinha.</div>
+      </div>
+      <div>
+        <h4>Resposta modelo (Wania)</h4>
+        <div class="quote">Olá! Preciso de ajuda com o enxoval do PDW0108 que até hoje não chegou</div>
+        <div class="reply"><strong>Agente (Wania)</strong>Boa tarde [Nome], aqui é a Wania, como posso te ajudar?<br><br>Vou verificar com eles para ver se encontram seu pedido. Você lembra o que pediu?<br><br>Para rastrear seu pedido, entre no card do seu pedido na lojinha e lá tem a transportadora e o código de rastreio.</div>
+        <h4 style="margin-top:20px">Links úteis</h4>
+        <ul>
+          <li>Card do pedido na Lojinha → <code>lojinha.seazone/pedidos</code></li>
+          <li>Oráculo &mdash; processo Harus (ver em "Recompra de Enxoval")</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+
+  <details class="tema">
+    <summary>
+      <span class="t-title">2.2 &mdash; Compra de enxoval pelo proprietário</span>
+      <span class="t-vol"><b>10</b> sessões</span>
+    </summary>
+    <div class="tema-body">
+      <div>
+        <h4>Sinais na 1ª mensagem</h4>
+        <ul>
+          <li>"A proprietária do [CÓDIGO] quer comprar o enxoval"</li>
+          <li>"O proprietário fez a compra mas não sabe se já saiu pra entrega"</li>
+          <li>"Preciso de apoio com o enxoval do imóvel [CÓDIGO], o proprietário já quer fechar"</li>
+        </ul>
+        <h4 style="margin-top:24px">Quando escalar</h4>
+        <div class="escal">Se a quantidade/valor não bate com o orçamento inicial (ex.: era 4 hóspedes, virou 6), <b>pedir pro time entrar em contato direto com o proprietário</b> antes de fechar.</div>
+      </div>
+      <div>
+        <h4>Resposta modelo (Wania / Raquel)</h4>
+        <div class="quote">Boa tarde! A proprietária do OBR0503 quer comprar o enxoval. Por favor falar com ela.</div>
+        <div class="reply"><strong>Agente (Wania)</strong>Boa tarde Raquel, a proprietária precisa falar com o CS proprietários. Ou se você quiser ajudar, deve abrir um suporte franquias e pedir para eles acionarem o CS proprietários para falar com a proprietária.</div>
+        <div class="reply"><strong>Alternativa (quando a franquia já está intermediando)</strong>Boa tarde [Nome], você é franqueada? OK, vou dar uma olhada nesse pedido.</div>
+      </div>
+    </div>
+  </details>
+
+  <details class="tema">
+    <summary>
+      <span class="t-title">2.3 &mdash; Lojinha (pedido, pagamento, link, comprovante)</span>
+      <span class="t-vol"><b>24</b> sessões (lojinha + link expirado)</span>
+    </summary>
+    <div class="tema-body">
+      <div>
+        <h4>Sinais na 1ª mensagem</h4>
+        <ul>
+          <li>"Estou com pedido lá na loja Seazone, realizado dia X"</li>
+          <li>"Eu não estou conseguindo pagar meu card. Eu clico e não abre. Da lojinha."</li>
+          <li>"Fiz um pedido na lojinha, paguei e esqueci de anexar o comprovante"</li>
+          <li>"O link expirou. Pode me enviar outro?"</li>
+        </ul>
+        <h4 style="margin-top:24px">Quando escalar</h4>
+        <div class="escal">Problema de infraestrutura (link não gera, Pix não libera): <b>abrir chamado na squad Jornada Enxoval</b> com print e o id do pedido.</div>
+      </div>
+      <div>
+        <h4>Resposta modelo (Wania)</h4>
+        <div class="quote">Eu não estou conseguindo pagar meu card. Eu clico e não abre. Da lojinha. É preciso pagar.</div>
+        <div class="reply"><strong>Agente (Wania)</strong>Se quer pagar no boleto tenho que solicitar um novo, aquele já expirou. Quer boleto ou pode ser chave Pix?<br><br>Um momento que vou solicitar.</div>
+        <div class="reply"><strong>Para atraso sistêmico</strong>Boa tarde [Nome], tudo bem? Estamos com atraso essa semana devido alguns fornecedores estarem na Equipotel em São Paulo e não estão conseguindo atender a lojinha. Semana que vem volta ao normal.</div>
+      </div>
+    </div>
+  </details>
+
+  <details class="tema">
+    <summary>
+      <span class="t-title">2.4 &mdash; Amenities (pedido, pagamento, item errado)</span>
+      <span class="t-vol"><b>21</b> sessões</span>
+    </summary>
+    <div class="tema-body">
+      <div>
+        <h4>Sinais na 1ª mensagem</h4>
+        <ul>
+          <li>"Compra de amenities"</li>
+          <li>"Não consigo realizar o pagamento de amenities, diz que o link é inválido"</li>
+          <li>"Fiz uma compra de amenities errada, gostaria de cancelar"</li>
+          <li>"Pedido que fiz do shampoo e não tenho retorno"</li>
+          <li>"Recebi o pedido da Somar Malhas com 2 camisetas a menos"</li>
+        </ul>
+        <h4 style="margin-top:24px">Quando escalar</h4>
+        <div class="escal">Item faltando na entrega ou vindo errado: <b>abrir suporte à Compras</b> com foto do que chegou e nota fiscal.</div>
+      </div>
+      <div>
+        <h4>Resposta modelo (Wania)</h4>
+        <div class="quote">Fiz uma compra de amenities errada, gostaria de cancelar para fazer uma nova</div>
+        <div class="reply"><strong>Agente (Wania)</strong>Bom dia Andreia, aqui é a Wania, tudo bem?<br><br>Vou cancelar seu pedido.</div>
+        <div class="reply"><strong>Link inválido pra pagamento</strong>Boa tarde [Nome], vou solicitar um novo link.</div>
+      </div>
+    </div>
+  </details>
+
+  <details class="tema">
+    <summary>
+      <span class="t-title">2.5 &mdash; Cadastro de fornecedor (link não abre, pós-cadastro)</span>
+      <span class="t-vol"><b>15</b> sessões</span>
+    </summary>
+    <div class="tema-body">
+      <div>
+        <h4>Sinais na 1ª mensagem</h4>
+        <ul>
+          <li>"Tenho interesse em fazer o cadastro, mas o link enviado não abre"</li>
+          <li>"Estou cadastrando a Zellare, porém quando chega no item cidade não avança para a próxima etapa"</li>
+          <li>"Sobre o cadastro, já fiz. E agora?"</li>
+          <li>"Tentei fazer o cadastro como prestador de serviços e não consegui"</li>
+        </ul>
+        <h4 style="margin-top:24px">Quando escalar</h4>
+        <div class="escal">Transferir pro <b>time de Suporte Franquias</b> (não é tema da fila Fornecedores). Se já tentou cadastro 2x+ sem sucesso: escalar bug pra squad do portal.</div>
+      </div>
+      <div>
+        <h4>Resposta modelo (Larissa, Suporte Seazone)</h4>
+        <div class="quote">Olá, tenho interesse em fazer o cadastro, mas o link enviado não abre.</div>
+        <div class="reply"><strong>Agente (Larissa)</strong>Olá, tudo bem? Aqui é a Larissa, do Time de Suporte da Seazone 💙🏠<br><br>Vou conectar você com o time responsável que vai conseguir te ajudar com esse ponto.</div>
+      </div>
+    </div>
+  </details>
+
+  <details class="tema">
+    <summary>
+      <span class="t-title">2.6 &mdash; Easycover (acionamento da assistência)</span>
+      <span class="t-vol"><b>6</b> sessões</span>
+    </summary>
+    <div class="tema-body">
+      <div>
+        <h4>Sinais na 1ª mensagem</h4>
+        <ul>
+          <li>"Preciso falar sobre dificuldades com o acionamento da assistência da easycover"</li>
+          <li>"Vou encaminhar o áudio do proprietário sobre o easy cover"</li>
+          <li>"Acionamento sinistro"</li>
+        </ul>
+        <h4 style="margin-top:24px">Quando escalar</h4>
+        <div class="escal"><b>Dificuldade recorrente de acionamento</b> → documentar o caso (número do seguro, data da tentativa, resposta recebida) e escalar pro gestor de parceria com a Easycover.</div>
+      </div>
+      <div>
+        <h4>Resposta modelo (Wania)</h4>
+        <div class="quote">Preciso falar sobre dificuldades com o acionamento da assistência da easycover.</div>
+        <div class="reply"><strong>Agente (Wania)</strong>Bom dia Lucas, aqui é a Wania, como posso te ajudar?<br><br>Oi Lucas, imagino que esteja na correria o tempo todo, obrigada pela visibilidade e vamos entrar em contato com a easy cover para entender o motivo dessa dificuldade em atender na assistência 24h. E o mais importante, saber exatamente a cobertura dessa assistência. Assim que tiver um retorno eu te chamo. Um bom dia de trabalho pra você.</div>
+      </div>
+    </div>
+  </details>
+
+  <details class="tema">
+    <summary>
+      <span class="t-title">2.7 &mdash; Multa, cobrança, BCard</span>
+      <span class="t-vol"><b>7</b> sessões</span>
+    </summary>
+    <div class="tema-body">
+      <div>
+        <h4>Sinais na 1ª mensagem</h4>
+        <ul>
+          <li>"Já posso te mandar a multa de R$ 250,00?"</li>
+          <li>"Não tive retorno sobre o prêmio da b card"</li>
+          <li>"Como vai ser o pagamento da compra"</li>
+        </ul>
+        <h4 style="margin-top:24px">Quando escalar</h4>
+        <div class="escal">Multa envolvendo imóvel/reserva: escalar pro Suporte Franquias. BCard sem retorno: encaminhar pra gestora do programa.</div>
+      </div>
+      <div>
+        <h4>Resposta modelo (perfil Wania)</h4>
+        <div class="reply"><strong>Agente</strong>Oi [Nome], pode me enviar sim. Vou encaminhar pro time responsável e te dou retorno em 48h úteis.</div>
+      </div>
+    </div>
+  </details>
+
+  <details class="tema">
+    <summary>
+      <span class="t-title">2.8 &mdash; Novo imóvel entrando (enxoval inicial + grupo)</span>
+      <span class="t-vol"><b>6</b> sessões</span>
+    </summary>
+    <div class="tema-body">
+      <div>
+        <h4>Sinais na 1ª mensagem</h4>
+        <ul>
+          <li>"Tivemos a entrada de dois imóveis da franquia do [NOME], em [CIDADE]"</li>
+          <li>"Estou no aguardo da criação do grupo para que possamos dar andamento aos agendamentos"</li>
+          <li>"Sou fotógrafa da franquia de [CIDADE] e a franqueada me passou dois imóveis a serem feitos"</li>
+          <li>Códigos de imóvel + "UPLOAD CONCLUIDO"</li>
+        </ul>
+        <h4 style="margin-top:24px">Quando escalar</h4>
+        <div class="escal">Criação de grupo + fluxo de implantação: encaminhar pra <b>squad de Implantação</b> (owner: Henry Yudi &mdash; Fornecedores operacionais) com código do imóvel + nome do franqueado.</div>
+      </div>
+      <div>
+        <h4>Resposta modelo</h4>
+        <div class="reply"><strong>Agente</strong>Oi [Nome], recebemos a entrada. Vou acionar o time de Implantação para criar o grupo e seguir com os agendamentos. Fico no aguardo da conferência final.</div>
+      </div>
+    </div>
+  </details>
+
+  <details class="tema">
+    <summary>
+      <span class="t-title">2.9 &mdash; Sistema/bug (Seazone Host, informação não encontrada)</span>
+      <span class="t-vol"><b>18</b> sessões</span>
+    </summary>
+    <div class="tema-body">
+      <div>
+        <h4>Sinais na 1ª mensagem</h4>
+        <ul>
+          <li>"Gostaria de saber qual a data que o contrato do imóvel [CÓDIGO] foi assinado"</li>
+          <li>"Não consigo encontrar essa informação no Seazone Host"</li>
+          <li>"Está dando um erro no sistema na parte do telefone"</li>
+          <li>"O telefone é do Canadá e não está reconhecendo"</li>
+          <li>"A IA tá falando de fornecedor&hellip;"</li>
+        </ul>
+        <h4 style="margin-top:24px">Quando escalar</h4>
+        <div class="escal">Erro de sistema reproduzível: abrir chamado na squad do Seazone Host com print + código do imóvel.</div>
+      </div>
+      <div>
+        <h4>Resposta modelo</h4>
+        <div class="quote">Gostaria de saber qual a data que o contrato do imóvel DNAG0706 foi assinado. Não consigo encontrar essa informação no Seazone Host.</div>
+        <div class="reply"><strong>Agente</strong>Oi Agatha, no Sapron está a data de 27/04/2025 a data do contrato do DNAG0706.</div>
+        <div class="reply"><strong>Quando precisa escalar</strong>Boa tarde, acho que seria melhor você abrir um suporte franquias para encaminhamento. tel:+5548991138912</div>
+      </div>
+    </div>
+  </details>
+
+  <details class="tema">
+    <summary>
+      <span class="t-title">2.10 &mdash; Proprietário sem contato / reclamando direto</span>
+      <span class="t-vol"><b>6</b> sessões</span>
+    </summary>
+    <div class="tema-body">
+      <div>
+        <h4>Sinais na 1ª mensagem</h4>
+        <ul>
+          <li>"Tô precisando de ajuda com o proprietário que quer muito falar com vocês"</li>
+          <li>"Ele falou que faz dias que tá tentando contato"</li>
+          <li>"Ela estava bem nervosa"</li>
+          <li>"O proprietário já tá estressado"</li>
+        </ul>
+        <h4 style="margin-top:24px">Quando escalar</h4>
+        <div class="escal"><b>Sempre.</b> Encaminhar pro CS Proprietários via abertura de suporte franquias &mdash; nunca segurar com o franqueado tentando mediar.</div>
+      </div>
+      <div>
+        <h4>Resposta modelo (Wania)</h4>
+        <div class="reply"><strong>Agente (Wania)</strong>Oi [Nome], a proprietária precisa falar com o CS Proprietários. Se você quiser ajudar, abra um suporte franquias e peça para eles acionarem o CS Proprietários para falar com a proprietária.</div>
+      </div>
+    </div>
+  </details>
+
+  <details class="tema">
+    <summary>
+      <span class="t-title">2.11 &mdash; Hóspede/reserva na fila errada</span>
+      <span class="t-vol"><b>17</b> sessões</span>
+    </summary>
+    <div class="tema-body">
+      <div>
+        <h4>Sinais na 1ª mensagem</h4>
+        <ul>
+          <li>"Às 15:30 recebi uma emergência de locação"</li>
+          <li>"Esse hóspede não tem telefone, não consigo falar com ele"</li>
+          <li>"Preciso falar com o Suporte e não me respondem"</li>
+        </ul>
+        <h4 style="margin-top:24px">Quando escalar</h4>
+        <div class="escal"><b>Redirecionar imediatamente.</b> Hóspede não é escopo de Fornecedores. Encaminhar pro WhatsApp do time de Reservas / Hospedagem (wa.me/554891138912).</div>
+      </div>
+      <div>
+        <h4>Resposta modelo</h4>
+        <div class="reply"><strong>Agente</strong>Oi [Nome], esse tema é com o time de Reservas / Hospedagem. Para urgências na hospedagem, chama direto o WhatsApp wa.me/554891138912. Horário: 09h &ndash; 21h. Em caso de emergência fora do horário, usar o plantão.</div>
+      </div>
+    </div>
+  </details>
+
+  <details class="tema">
+    <summary>
+      <span class="t-title">2.12 &mdash; Fornecedor oferecendo parceria (vendas ativas)</span>
+      <span class="t-vol"><b>11</b> sessões</span>
+    </summary>
+    <div class="tema-body">
+      <div>
+        <h4>Sinais na 1ª mensagem</h4>
+        <ul>
+          <li>"Somos a [EMPRESA], empresa especializada em [SERVIÇO]"</li>
+          <li>"Favor enviar a proposta e detalhamento do serviço e entrega e valores detalhados para devida avaliação de parceria"</li>
+          <li>"Trabalho com manutenção e conservação de imóveis, tenho CNPJ"</li>
+          <li>"Sou fotógrafa / Câmera Nikon / Canon &mdash; uso CNPJ"</li>
+        </ul>
+        <h4 style="margin-top:24px">Quando escalar</h4>
+        <div class="escal">Avaliar perfil: fornecedor relevante (climatização, limpeza em escala, enxoval) → encaminhar pro time de Fornecedores. Serviço pontual (fotografia individual, parceria pequena) → agradecer e arquivar.</div>
+      </div>
+      <div>
+        <h4>Resposta modelo (Wania)</h4>
+        <div class="reply"><strong>Agente (Wania)</strong>Oi Juliane, sua lavanderia fica na região do Butantã? [&hellip;] Perfeito, tenho 3 franqueados que operam na região de Butantã, Pinheiros e Vila Madalena. Você atende essas regiões?</div>
+        <div class="reply"><strong>Para parceria genérica</strong>Oi [Nome], obrigada pelo contato. Pode me enviar a proposta pra eu encaminhar pro time responsável avaliar.</div>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- BLOCO 3 — CONSULTORIA REGIONAL -->
+<section class="block">
+  <h2><span class="idx">03 · Consultoria Regional</span>Direcionamento ao gestor regional</h2>
+  <p class="block-intro">Fila com <strong>32 sessões</strong> em 60 dias &mdash; função principal é <strong>roteamento</strong>: o franqueado pede pra falar com o gestor regional (Thiago, Clara, Hércules).</p>
+
+  <details class="tema" open>
+    <summary>
+      <span class="t-title">3.1 &mdash; "Falar com meu gestor regional" (Thiago / Clara / Hércules)</span>
+      <span class="t-vol"><b>14</b> sessões &mdash; 44% da fila</span>
+    </summary>
+    <div class="tema-body">
+      <div>
+        <h4>Sinais na 1ª mensagem</h4>
+        <ul>
+          <li>"Preciso falar com gestor Thiago"</li>
+          <li>"Gostaria de falar com a Clara, gestora regional"</li>
+          <li>"Olá, preciso falar com nosso Gestor de Franquias, Hércules"</li>
+          <li>"Quero falar com meu gestor regional"</li>
+          <li>"Preciso falar urgente com meu gestor regional"</li>
+          <li>"Consultor regional"</li>
+        </ul>
+        <h4 style="margin-top:24px">Quando escalar</h4>
+        <div class="escal">Transferir direto. Se o gestor nomeado está em férias/vacation (consultar <code>mcp__taskdex__list_vacations</code> ou o chat #liderança), encaminhar pro gestor substituto.</div>
+      </div>
+      <div>
+        <h4>Resposta modelo (perfil Thiago)</h4>
+        <div class="reply"><strong>Agente (handoff)</strong>Um momento vou transferir.</div>
+        <div class="reply"><strong>Gestor assume</strong>Oi Mariana! Tudo bom??? Thiago aqui&hellip; Como posso te ajudar?</div>
+      </div>
+    </div>
+  </details>
+
+  <details class="tema">
+    <summary>
+      <span class="t-title">3.2 &mdash; Dúvida de taxa de limpeza / financeiro</span>
+      <span class="t-vol"><b>2</b> sessões (volume baixo mas padrão claro)</span>
+    </summary>
+    <div class="tema-body">
+      <div>
+        <h4>Sinais na 1ª mensagem</h4>
+        <ul>
+          <li>"Preciso falar sobre as taxas de limpeza que estão defasadas"</li>
+          <li>"Pode me explicar a diferença entre reserva e limpeza"</li>
+          <li>"Está havendo menos limpeza do que a reserva"</li>
+        </ul>
+        <h4 style="margin-top:24px">Quando escalar</h4>
+        <div class="escal">Taxa defasada vs. régua da calculadora 2026 → auditoria rápida no MCP <code>taxa-limpeza</code> com o código do imóvel. Discrepância de valor pago vs. valor esperado → escalar pro David (Precificação).</div>
+      </div>
+      <div>
+        <h4>Resposta modelo</h4>
+        <div class="reply"><strong>Agente</strong>Oi [Nome], vou puxar os dados do imóvel e confirmo a taxa aplicada hoje vs. a régua da Calculadora. Volto em até 24h úteis. Me manda o código do imóvel.</div>
+      </div>
+    </div>
+  </details>
+
+  <details class="tema">
+    <summary>
+      <span class="t-title">3.3 &mdash; Pedido de captação de imóveis pra carteira</span>
+      <span class="t-vol"><b>1</b> sessão (padrão claro)</span>
+    </summary>
+    <div class="tema-body">
+      <div>
+        <h4>Sinais na 1ª mensagem</h4>
+        <ul>
+          <li>"Sou franqueado em [CIDADE], gostaria de saber como está a captação de imóveis para minha carteira"</li>
+          <li>"Antes do treinamento presencial tem previsão de algum imóvel para a minha franquia?"</li>
+        </ul>
+        <h4 style="margin-top:24px">Quando escalar</h4>
+        <div class="escal">Encaminhar pra Vivianny (Relacionamento Franquias) ou time comercial regional pra alinhar fila de captação.</div>
+      </div>
+      <div>
+        <h4>Resposta modelo</h4>
+        <div class="reply"><strong>Agente</strong>Oi [Nome], vou alinhar com o time comercial da sua região e volto com previsão. A fila de captação depende do estágio do funil de leads &mdash; te atualizo nesta semana.</div>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- BLOCO 4 — MANUTENÇÃO -->
+<section class="block">
+  <h2><span class="idx">04 · Manutenção</span>Volume marginal, mas dois padrões</h2>
+  <p class="block-intro">Só <strong>6 sessões</strong> em 60 dias. Fila nova (ativa desde ago/2026) e com volume baixíssimo, provavelmente porque manutenção flui pelo Pipefy 14 em paralelo.</p>
+
+  <details class="tema">
+    <summary>
+      <span class="t-title">4.1 &mdash; Manutenção de equipamento no imóvel</span>
+      <span class="t-vol"><b>1</b> sessão</span>
+    </summary>
+    <div class="tema-body">
+      <div>
+        <h4>Sinais na 1ª mensagem</h4>
+        <ul>
+          <li>"UH [NÚMERO] apresentou problemas no fogão elétrico, está queimado, necessária substituição"</li>
+          <li>"Pedimos desculpas pelo atraso dos lançamentos de danos e NFs operacionais"</li>
+          <li>Fluxo: franqueado comunicando dano + aguardando aprovação do proprietário</li>
+        </ul>
+        <h4 style="margin-top:24px">Quando escalar</h4>
+        <div class="escal">Caso parado por falta de retorno do proprietário &gt; 5 dias → acionar CS Proprietários. Fluxo paralelo ao Pipefy 14 (Manutenção): confirmar que o card existe lá.</div>
+      </div>
+      <div>
+        <h4>Resposta modelo</h4>
+        <div class="reply"><strong>Agente</strong>Oi [Nome], recebi. Já abri o card no Pipefy 14 pro Vinicius Satores olhar. Se o proprietário não responder em 48h, acionamos o CS Proprietários.</div>
+      </div>
+    </div>
+  </details>
+
+  <details class="tema">
+    <summary>
+      <span class="t-title">4.2 &mdash; Fornecedor de serviço querendo cadastro</span>
+      <span class="t-vol"><b>1</b> sessão</span>
+    </summary>
+    <div class="tema-body">
+      <div>
+        <h4>Sinais na 1ª mensagem</h4>
+        <ul>
+          <li>"Trabalho com manutenção e conservação de imóveis, pintura, pequenos reparos, acabamento. Tenho CNPJ, atuo em [CIDADE]"</li>
+        </ul>
+        <h4 style="margin-top:24px">Quando escalar</h4>
+        <div class="escal">Encaminhar pro Henry Yudi (Fornecedores) pra avaliar cadastro no funil de parceiros regionais.</div>
+      </div>
+      <div>
+        <h4>Resposta modelo</h4>
+        <div class="reply"><strong>Agente</strong>Oi [Nome], obrigada pelo contato. Vou encaminhar seu perfil pro time de Fornecedores avaliar. Em quanto tempo você consegue atender uma emergência (ex.: fechadura quebrada, infiltração)? Isso ajuda a priorizar.</div>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- BLOCO 5 — RUÍDO -->
+<section class="block">
+  <h2><span class="idx">05 · Ruído e desvios comuns</span>O que não é atendimento</h2>
+  <p class="block-intro">Mais da metade do volume real nas 2 filas de prospecção é <strong>auto-reply de outras empresas</strong> que o bot acabou disparando. Importante treinar o time pra identificar e fechar rapidamente, sem gastar atendimento humano.</p>
+
+  <div class="insight">
+    <div class="n">450<small>auto-replies em 60d</small></div>
+    <p><strong>Terceiros respondendo o outbound.</strong> A SIA disparou pra números cadastrados como WhatsApp Business de corretores de imóveis, pousadas, agências de viagem, imobiliárias, lavanderias, climatização. O auto-reply dessas empresas entra na fila ("Agradecemos seu contato", "Me siga no Instagram", "Para orçamento envie&hellip;"). <strong>Não é lead.</strong> Encerrar sem resposta.</p>
+  </div>
+
+  <div class="insight">
+    <div class="n">124<small>mensagens "curtas"</small></div>
+    <p><strong>Mensagens com &lt;25 caracteres</strong> (ex.: "Oi", "Boa tarde", "Alô", "??", "Sim") sem contexto adicional. Padrão: enviar <strong>uma</strong> pergunta de qualificação ("Posso te ajudar com o quê?") e, se não houver resposta em 24h, fechar a sessão.</p>
+  </div>
+
+  <div class="insight">
+    <div class="n">420<small>sessões ambíguas</small></div>
+    <p><strong>Mensagens não classificadas automaticamente</strong> (24% das 1.854 reais). Representam ou temas de nicho (indicação de imóvel com dúvida de comissão, contrato específico, dúvida pontual de hóspede) ou conversas em andamento que exigem leitura humana. Playbook v2 vai refinar essas.</p>
+  </div>
+</section>
+
+<!-- BLOCO 6 — LEITURA DE TRÁS PRA FRENTE -->
+<section class="block">
+  <h2><span class="idx">06 · Como ler</span>Encontrar o tema certo em 10 segundos</h2>
+  <p class="block-intro">Fluxo de decisão rápido pro atendente que acabou de abrir uma sessão nova:</p>
+  <table class="filas">
+    <thead><tr><th>Fila que caiu</th><th>Primeiros sinais</th><th>Vai pro tema</th></tr></thead>
+    <tbody>
+      <tr><td class="name">Pré Vendas / Comercial</td><td>"Quero avaliar ser franqueado" / "Gostaria de investir"</td><td>1.1 Lead frio LP</td></tr>
+      <tr><td class="name">Pré Vendas / Comercial</td><td>"Não tenho interesse"</td><td>1.2 Encerrar cordialmente</td></tr>
+      <tr><td class="name">Pré Vendas / Comercial</td><td>"Quero saber mais" / "Como funciona"</td><td>1.3 Perguntar localidade + pitch</td></tr>
+      <tr><td class="name">Pré Vendas / Comercial</td><td>"Já tenho pousada / short stay / unidades operando"</td><td>1.4 LEAD QUENTE &mdash; agendar hoje</td></tr>
+      <tr><td class="name">Fornecedores</td><td>"Enxoval não chegou" / "Harus"</td><td>2.1 Rastreio na lojinha</td></tr>
+      <tr><td class="name">Fornecedores</td><td>"Proprietário quer comprar enxoval"</td><td>2.2 Direcionar CS Prop via Suporte Franquias</td></tr>
+      <tr><td class="name">Fornecedores</td><td>"Lojinha" / "Link não abre" / "Comprovante"</td><td>2.3 Novo link / Pix / boleto</td></tr>
+      <tr><td class="name">Fornecedores</td><td>"Amenities" / "Shampoo" / "Sabonete"</td><td>2.4 Cancelar/novo pedido</td></tr>
+      <tr><td class="name">Fornecedores</td><td>"Cadastro" / "Link cadastro"</td><td>2.5 Transferir Suporte Franquias</td></tr>
+      <tr><td class="name">Fornecedores</td><td>"Easycover" / "Seguro" / "Sinistro"</td><td>2.6 Acionar time Easycover</td></tr>
+      <tr><td class="name">Fornecedores</td><td>"Multa" / "BCard"</td><td>2.7 Encaminhar com SLA 48h</td></tr>
+      <tr><td class="name">Fornecedores</td><td>"Entrada de imóvel novo" / "Fotógrafa" / Códigos de imóvel</td><td>2.8 Squad Implantação</td></tr>
+      <tr><td class="name">Fornecedores</td><td>"Sistema" / "Erro" / "Seazone Host"</td><td>2.9 Puxar Sapron, abrir chamado se bug</td></tr>
+      <tr><td class="name">Fornecedores</td><td>"Proprietário tentando contato / nervoso"</td><td>2.10 CS Proprietários via Suporte</td></tr>
+      <tr><td class="name">Fornecedores</td><td>"Hóspede" / "Reserva" / "Check-in"</td><td>2.11 Redirecionar wa.me/554891138912</td></tr>
+      <tr><td class="name">Fornecedores</td><td>"Somos a [Empresa X]&hellip; especializada em&hellip;"</td><td>2.12 Avaliar perfil, encaminhar se relevante</td></tr>
+      <tr><td class="name">Consultoria Regional</td><td>"Falar com Thiago/Clara/Hércules" / "Meu gestor regional"</td><td>3.1 Transferir direto</td></tr>
+      <tr><td class="name">Consultoria Regional</td><td>"Taxa de limpeza defasada"</td><td>3.2 Auditar MCP taxa-limpeza</td></tr>
+      <tr><td class="name">Manutenção</td><td>"Fogão queimado" / "UH apresentou problema"</td><td>4.1 Pipefy 14 + CS Prop se precisar</td></tr>
+      <tr><td class="name">Qualquer fila</td><td>Auto-reply ("Agradecemos seu contato" / "Seg a sex 9h-18h")</td><td>Encerrar sem resposta</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<footer>
+  <div>Playbook v1 &middot; destilado de 60 dias de SIA &middot; a cada revisão trimestral refinar os temas ambíguos.</div>
+  <div>Rayanne Oliveira &middot; BackOffice Franquias &middot; 2026-10-21</div>
+</footer>
+
+</div>
+</body>
+</html>
